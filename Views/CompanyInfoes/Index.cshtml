@@ -1,0 +1,54 @@
+﻿@model IEnumerable<OneNETDataReceiver.Model.CompanyInfo>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+ <link rel="stylesheet" type="text/css" href="~/CSS/components/button.css">
+
+ <p>
+     <div class="ui stackable equal width grid">
+         <div class="column">
+             <button class="ui secondary button">
+                 @Html.ActionLink("Create New", "Create")
+             </button>
+         </div>
+     </div>
+ </p>
+<link rel="stylesheet" type="text/css" href="~/CSS/Table.css">
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Company_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Company_name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Company_id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Company_name)
+        </td>
+        <td>
+            <div class="spaced">
+                <button class="teal ui button">
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Key_id }) 
+                    </button>|
+                    <button class="blue ui button">
+                        @Html.ActionLink("Details", "Details", new { id = item.Key_id })
+                    </button>|
+                    <button class="red ui button">
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Key_id })
+                    </button>
+            </div>
+        </td>
+    </tr>
+}
+
+</table>

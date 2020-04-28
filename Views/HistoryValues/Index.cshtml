@@ -1,0 +1,120 @@
+﻿@model IEnumerable<OneNETDataReceiver.Model.HistoryValue>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage3.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="~/CSS/components/button.css">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <script type="text/javascript" src="~/JS/Dash/jquery.min.js"></script>
+    
+    <script type="text/javascript">
+
+        function submitForm(pagenumber) {
+            pagenumber = parseInt(pagenumber, 10);
+            $('#PageIndex').val(pagenumber - 1);
+            $('#searchForm').submit();
+        }
+
+        $(function () {
+            $('#searchButton').click(function () {
+                submitForm($('#pagebar .currentpagenumber').text());
+            });
+            $('#pagebar .pagenumber').click(function () {
+                submitForm($(this).text());
+            });
+
+        });
+    </script>   
+</head>
+<body>
+    @using (Html.BeginForm("Index", "HistoryValues", FormMethod.Post, new { id = "searchForm" }))
+    {
+        @Html.AntiForgeryToken()
+        <p>
+            设备编号: @Html.DropDownList("SNs",
+ViewBag.MajorList as IEnumerable<SelectListItem>, "全部")
+            设备状态: @Html.TextBox("Value")
+            <input type="hidden" id="PageIndex" name="PageIndex" value="0" />
+            <input type="button" id="searchButton" value="检索" />
+
+        </p>
+    }
+    <p>
+    </p>
+    <table class="ui celled selectable right aligned table" style="width: 100%;">
+        <tr>
+            <th style="text-align:center;">
+                @Html.DisplayNameFor(model => model.SN)
+            </th>
+            <th style="text-align:center;" >
+                @Html.DisplayNameFor(model => model.Value)
+            </th>
+            <th style="text-align:center;">
+                @Html.DisplayNameFor(model => model.ReportTime)
+            </th>
+            <th style="text-align:center;">
+                @Html.DisplayNameFor(model => model.RSRP)
+            </th>
+            <th style="text-align:center;">
+                @Html.DisplayNameFor(model => model.SNR)
+            </th>
+            <th style="text-align:center;">
+                @Html.DisplayNameFor(model => model.Battery)
+            </th>
+            <th style="text-align:center;">
+                @Html.DisplayNameFor(model => model.ServerTime)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.SN)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.Value)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.ReportTime)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.RSRP)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.SNR)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.Battery)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.ServerTime)
+                </td>
+
+            </tr>
+        }
+
+    </table>
+    <div id="pagebar">
+        @for (var i = 0; i < ViewBag.PageCount; i++)
+        {
+            if (i == ViewBag.PageIndex)
+            {
+                <span class="currentpagenumber">@(i + 1)</span>
+            }
+            else
+            {
+                <a class="pagenumber" href="javascript:;">@(i + 1)</a>
+            }
+        }
+    </div>
+
+</body>
+</html>

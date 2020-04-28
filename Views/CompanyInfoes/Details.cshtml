@@ -1,0 +1,35 @@
+﻿@model OneNETDataReceiver.Model.CompanyInfo
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CompanyInfo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Company_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Company_id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Company_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Company_name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Key_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

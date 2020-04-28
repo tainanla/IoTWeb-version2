@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<body>
+    <div id="divMain" style="transform-origin: 0px 0px 0px; margin: 0px auto; width: 1920px; height: 1080px; border: 0px solid rgb(204, 204, 204);
+background: url('./Images/SchoolBG.png') 0% 0%  no-repeat; position: relative; overflow: hidden; transform: scale(1);">
+        <div>
+            <a href="/UserInfoes/Index" class="btn btn-primary btn-large" target="_self">返回</a>
+        </div>
+        <label style="color:#00E676;font-size:x-large;position:fixed;top:260px;right:1380px;">
+            窗帘:
+            <label id="chuanglian">关闭</label>
+        </label>
+        <label style="color:#00E676;font-size:x-large;position:absolute;top:83px;left:711px;">
+            冰箱:
+            <label id="bingxiang">关闭</label>
+        </label>
+        <label style="color:#00E676;font-size:x-large;position:fixed;top:83px;right:800px;">
+            门:
+            <label id="door">打开</label>
+        </label>
+
+        <label id="lbl_GPS" style="color:#00E676;font-size:x-large;position:fixed;width:1500px;top:900px;right:300px;"></label>
+    </div>
+</body>
+<script>
+    var scale3 = 1;
+    function resizeDIV() {
+        if (parseInt($('body').width()) < 1920) {
+            scale3 = $('body').width() / 1920;
+        }
+        $("#divMain")[0].style.transform = 'scale(' + scale3 + ')';
+    };
+    $(function () {
+        setInterval("GetVal()", 1000);
+        resizeDIV();
+        $(window).resize(resizeDIV);
+    });
+    function GetVal() {
+        $.ajax({
+            url: "./School/GetVal_All",
+            success: function (result) {
+                if (result.split(',')[0] == "1") {
+                    $("#chuanglian").text("打开");
+                    $("#chuanglian").css({ "color": "#00E676" });
+                }
+                else if (result.split(',')[0] == "0") {
+                    $("#chuanglian").text("关闭");
+                    $("#chuanglian").css({ "color": "#FF3D00" });
+                }
+                else {
+                    $("#chuanglian").text("异常");
+                    $("#chuanglian").css({ "color": "#FF3D00" });
+                }
+
+                if (result.split(',')[1] == "1") {
+                    $("#bingxiang").text("打开");
+                    $("#bingxiang").css({ "color": "#00E676" });
+                }
+                else if (result.split(',')[1] == "0") {
+                    $("#bingxiang").text("关闭");
+                    $("#bingxiang").css({ "color": "#FF3D00" });
+                }
+                else {
+                    $("#bingxiang").text("异常");
+                    $("#bingxiang").css({ "color": "#FF3D00" });
+                }
+
+                if (result.split(',')[2] == "1") {
+                    $("#door").text("打开");
+                    $("#door").css({ "color": "#00E676" });
+                }
+                else if (result.split(',')[2] == "0") {
+                    $("#door").text("关闭");
+                    $("#door").css({ "color": "#FF3D00" });
+                }
+                else {
+                    $("#door").text("异常");
+                    $("#door").css({ "color": "#FF3D00" });
+                }
+            }
+        });
+    }
+</script>
+

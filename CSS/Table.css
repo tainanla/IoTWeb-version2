@@ -1,0 +1,14 @@
+﻿body {
+}
+table {
+    width: 100%;
+    border-color: #dfdfdf;
+    border-collapse: collapse;
+}
+
+table tr td {
+     text-align: center;
+      padding:0.5rem 0;
+      border-color: #dfdfdf;
+      border:1px solid #dfdfdf;
+    }

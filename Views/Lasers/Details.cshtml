@@ -1,0 +1,83 @@
+﻿@model OneNETDataReceiver.Model.Laser
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Laser</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Introduce)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Introduce)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Company)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Company)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Url)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Url)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Contact_Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contact_Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Contact_Phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contact_Phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Contact_Tele)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contact_Tele)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Contact_Fax)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contact_Fax)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Contact_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contact_Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Name }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

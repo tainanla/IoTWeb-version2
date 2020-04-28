@@ -1,0 +1,176 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<body>
+    <div id="divMain" style="transform-origin: 0px 0px 0px; margin: 0px auto; width: 1920px; height: 1080px; border: 0px solid rgb(204, 204, 204);
+background: url('./Images/CheJianBG2.png') 0% 0%  no-repeat; position: relative; overflow: hidden; transform: scale(1);">
+        <div>
+            <p><a href="./" class="btn btn-primary btn-large" target="_self">返回</a></p>
+        </div>
+        <label style="color:#00E676;font-size:x-large;position:absolute;top:152px;left:37px;">
+            卷帘门:
+            <label id="juanlian">关闭</label>
+        </label>
+        <label style="color:#00E676;font-size:x-large;position:fixed;top:693px;left:37px;">
+            仓库门:
+            <label id="cangku">关闭</label>
+        </label>
+        <label style="color:#00E676;font-size:x-large;position:fixed;top:357px;left:1743px;">
+            玻璃门1:
+            <label id="boli1">打开</label>
+        </label>
+        <label style="color:#00E676;font-size:x-large;position:fixed;top:457px;left:1743px;">
+            玻璃门2:
+            <label id="boli2">打开</label>
+        </label>
+        <label style="color:#00E676;font-size:x-large;position:fixed;top:254px;left:1352px;">
+            激光器6000W:
+            <label id="jiguang6000">打开</label>
+        </label>
+        <label style="color:#00E676;font-size:x-large;position:fixed;top:704px;left:1218px;">
+            激光器680W:
+            <label id="jiguang680">打开</label>
+        </label>
+        <label style="color:#00E676;font-size:x-large;position:fixed;top:765px;left:558px;">
+            激光器4000W:
+            <label id="jiguang4000">打开</label>
+        </label>
+        <label style="color:#00E676;font-size:x-large;position:fixed;top:704px;left:1455px;">
+            激光器200W:
+            <label id="jiguang200">打开</label>
+        </label>
+        <label id="lbl_GPS" style="color:#00E676;font-size:x-large;position:fixed;width:1500px;top:900px;right:300px;"></label>
+    </div>
+</body>
+<script>
+    var scale3 = 1;
+    function resizeDIV() {
+        if (parseInt($('body').width()) < 1920) {
+            scale3 = $('body').width() / 1920;
+        }
+        $("#divMain")[0].style.transform = 'scale(' + scale3 + ')';
+    };
+    $(function () {
+        setInterval("GetVal()", 1000);
+        resizeDIV();
+        $(window).resize(resizeDIV);
+    });
+    function GetVal() {
+        $.ajax({
+            url: "./CheJian/GetVal_All",
+            success: function (result) {
+                if (result.split(',')[0] == "1") {
+                    $("#juanlian").text("打开");
+                    $("#juanlian").css({ "color": "#00E676" });
+                }
+                else if (result.split(',')[0] == "0") {
+                    $("#juanlian").text("关闭");
+                    $("#juanlian").css({ "color": "#FF3D00" });
+                }
+                else {
+                    $("#juanlian").text("异常");
+                    $("#juanlian").css({ "color": "#FF3D00" });
+                }
+
+                if (result.split(',')[1] == "1") {
+                    $("#cangku").text("打开");
+                    $("#cangku").css({ "color": "#00E676" });
+                }
+                else if (result.split(',')[1] == "0") {
+                    $("#cangku").text("关闭");
+                    $("#cangku").css({ "color": "#FF3D00" });
+                }
+                else {
+                    $("#cangku").text("异常");
+                    $("#cangku").css({ "color": "#FF3D00" });
+                }
+
+                if (result.split(',')[2] == "1") {
+                    $("#boli1").text("打开");
+                    $("#boli1").css({ "color": "#00E676" });
+                }
+                else if (result.split(',')[2] == "0") {
+                    $("#boli1").text("关闭");
+                    $("#boli1").css({ "color": "#FF3D00" });
+                }
+                else {
+                    $("#boli1").text("异常");
+                    $("#boli1").css({ "color": "#FF3D00" });
+                }
+                if (result.split(',')[3] == "1") {
+                    $("#boli2").text("打开");
+                    $("#boli2").css({ "color": "#00E676" });
+                }
+                else if (result.split(',')[3] == "0") {
+                    $("#boli2").text("关闭");
+                    $("#boli2").css({ "color": "#FF3D00" });
+                }
+                else {
+                    $("#boli2").text("异常");
+                    $("#boli2").css({ "color": "#FF3D00" });
+                }
+
+
+                if (result.split(',')[4] == "1") {
+                    $("#jiguang6000").text("打开");
+                    $("#jiguang6000").css({ "color": "#00E676" });
+                }
+                else if (result.split(',')[4] == "0") {
+                    $("#jiguang6000").text("关闭");
+                    $("#jiguang6000").css({ "color": "#FF3D00" });
+                }
+                else {
+                    $("#jiguang6000").text("异常");
+                    $("#jiguang6000").css({ "color": "#FF3D00" });
+                }
+
+
+                if (result.split(',')[5] == "1") {
+                    $("#jiguang680").text("打开");
+                    $("#jiguang680").css({ "color": "#00E676" });
+                }
+                else if (result.split(',')[5] == "0") {
+                    $("#jiguang680").text("关闭");
+                    $("#jiguang680").css({ "color": "#FF3D00" });
+                }
+                else {
+                    $("#jiguang680").text("异常");
+                    $("#jiguang680").css({ "color": "#FF3D00" });
+                }
+
+
+
+                if (result.split(',')[6] == "1") {
+                    $("#jiguang4000").text("打开");
+                    $("#jiguang4000").css({ "color": "#00E676" });
+                }
+                else if (result.split(',')[6] == "0") {
+                    $("#jiguang4000").text("关闭");
+                    $("#jiguang4000").css({ "color": "#FF3D00" });
+                }
+                else {
+                    $("#jiguang4000").text("异常");
+                    $("#jiguang4000").css({ "color": "#FF3D00" });
+                }
+
+
+                if (result.split(',')[7] == "1") {
+                    $("#jiguang200").text("打开");
+                    $("#jiguang200").css({ "color": "#00E676" });
+                }
+                else if (result.split(',')[7] == "0") {
+                    $("#jiguang200").text("关闭");
+                    $("#jiguang200").css({ "color": "#FF3D00" });
+                }
+                else {
+                    $("#jiguang200").text("异常");
+                    $("#jiguang200").css({ "color": "#FF3D00" });
+                }
+
+            }
+        });
+    }
+</script>
+

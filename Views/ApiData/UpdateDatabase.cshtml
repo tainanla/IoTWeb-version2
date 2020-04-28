@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "UpdateDatabase";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <body>
+        <input type="submit" id="btnUpdate" value="更新数据库" />
+    </body>
+
+
+    <script>
+
+
+        $("#btnUpdate").click(function UpdateDatabase() {
+            $.post('/ApiData/UpdateDB', {}, function (rsq) {
+                if (rsq.state == true) {
+                    alert(rsq.message);
+                }
+            }, "json")
+        })
+
+    </script>

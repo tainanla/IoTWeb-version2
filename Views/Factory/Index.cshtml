@@ -1,0 +1,161 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutFactory.cshtml";
+}
+<body style="background:url('./Images/FactoryBG.jpg') no-repeat; background-size:100%">
+    <div class="jumbotrodn">
+        <p><a href="./" class="btn btn-primary btn-large" target="_self">返回</a></p>
+    </div>
+    <label id="lbl_9373" style="color:#00E676;font-size:x-large;position:fixed;top:80px;right:270px;"></label>
+    <label id="lbl_GPS" style="color:#00E676;font-size:x-large;position:fixed;width:1500px;top:900px;right:300px;"></label>
+
+    <div id="gaugeV" style="position:fixed;height:240px;width:260px;top:650px;right:-1200px;"></div>
+    <div id="gaugeI" style="position:fixed;height:240px;width:260px;top:410px;right:-1500px;"></div>
+</body>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+
+<script>
+    var domV = document.getElementById("gaugeV");
+    var domI = document.getElementById("gaugeI");
+    var myChartV = echarts.init(domV);
+    var myChartI = echarts.init(domI);
+    optionV = null;
+    optionI = null;
+    $(function () {
+        optionV = {
+            tooltip: {
+                formatter: "{a} <br />{b} : {c}V"
+            },
+            toolbox: {
+                feature: {
+                    //restore: {},
+                    //saveAsImage: {}
+                }
+            },
+            series: [
+                {
+                    name: '电压表',
+                    type: 'gauge',
+                    detail: { formatter: '{value}V' },
+                    data: [{ value: 50, name: '电压' }],
+
+                    axisLine: {      //仪表盘轴线相关配置
+                        show: true,
+                        lineStyle: {
+                            width: 10,  //轴线宽度
+                        },
+                    },
+                    splitLine: { //分割线样式
+                        length: 10
+                    },
+                    markPoint: {
+                        symbol: 'circle',
+                        symbolSize: 5,
+                        data: [
+                            //跟你的仪表盘的中心位置对应上，颜色可以和画板底色一样
+                            { x: 'center', y: 'center', itemStyle: { color: '#FFF' } }
+                        ]
+                    },
+                    max: 400
+                },
+
+            ],
+        };
+
+        if (optionV && typeof optionV === "object") {
+            myChartV.setOption(optionV, true);
+        }
+        optionI = {
+            tooltip: {
+                formatter: "{a} <br />{b} : {c}A"
+            },
+            toolbox: {
+                feature: {
+                    //restore: {},
+                    //saveAsImage: {}
+                }
+            },
+            series: [
+                {
+                    name: '电流表',
+                    type: 'gauge',
+                    detail: { formatter: '{value}A' },
+                    data: [{ value: 50, name: '电流' }],
+
+                    axisLine: {      //仪表盘轴线相关配置
+                        show: true,
+                        lineStyle: {
+                            width: 10,  //轴线宽度
+                        },
+                    },
+                    splitLine: { //分割线样式
+                        length: 10
+                    },
+                    markPoint: {
+                        symbol: 'circle',
+                        symbolSize: 5,
+                        data: [
+                            //跟你的仪表盘的中心位置对应上，颜色可以和画板底色一样
+                            { x: 'center', y: 'center', itemStyle: { color: '#FFF' } }
+                        ]
+                    },
+                    max: 10
+                },
+
+            ],
+        };
+        if (optionI && typeof optionI === "object") {
+            myChartI.setOption(optionI, true);
+        }
+        setInterval("GetVal()", 1000);
+    });
+    function GetVal() {
+        $.ajax({
+            url: "./Factory/GetVal_9373",
+            success: function (result) {
+                if (result == "True") {
+                    $("#lbl_9373").text("工作");
+                    $("#lbl_9373").css({ "color": "#00E676" });
+                }
+                else {
+                    $("#lbl_9373").text("待机");
+                    $("#lbl_9373").css({ "color": "#FF3D00" });
+                }
+            }
+        });
+
+        $.ajax({
+            url: "./Factory/GetVal_V",
+            success: function (result) {
+                optionV.series[0].data[0].value = result;//(Math.random() * 100).toFixed(2) - 0;
+                myChartV.setOption(optionV, true);
+            }
+        })
+        $.ajax({
+            url: "./Factory/GetVal_I",
+            success: function (result) {
+                optionI.series[0].data[0].value = result;
+                myChartI.setOption(optionI, true);
+            }
+        })
+        $.ajax({
+            url: "./Factory/GetVal_GPS",
+            success: function (result) {
+                $("#lbl_GPS").text(result);
+            }
+        });
+    }
+
+
+    ;
+
+</script>
+

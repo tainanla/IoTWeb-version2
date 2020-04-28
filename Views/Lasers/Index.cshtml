@@ -1,0 +1,117 @@
+﻿@model IEnumerable<OneNETDataReceiver.Model.Laser>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<link rel="stylesheet" type="text/css" href="~/CSS/components/reset.css">
+<link rel="stylesheet" type="text/css" href="~/CSS/components/site.css">
+<link rel="stylesheet" type="text/css" href="~/CSS/components/grid.css">
+
+<!--- Component CSS -->
+<link rel="stylesheet" type="text/css" href="~/CSS/components/icon.css">
+<link rel="stylesheet" type="text/css" href="~/CSS/components/table.css">
+<link rel="stylesheet" type="text/css" href="~/CSS/components/button.css">
+<link rel="stylesheet" type="text/css" href="~/CSS/components/transition.css">
+<link rel="stylesheet" type="text/css" href=".~/CSS/components/popup.css">
+
+<!--- Component JS -->
+<script src="~/JS/assets/library/jquery.min.js"></script>
+<script src="~/JS/assets/library/iframe-content.js"></script>
+<script type="text/javascript" src="~/CSS/components/popup.js"></script>
+<script type="text/javascript" src="~/CSS/components/transition.js"></script>
+
+<!--- Show Names -->
+<script src="~/JS/assets/show-examples.js"></script>
+
+<!--- Example CSS -->
+<style>
+
+    body {
+        padding: 1em;
+    }
+
+    .ui.table {
+        table-layout: fixed;
+    }
+</style>
+
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div class="column">
+    <table class="ui very basic right aligned table">
+        
+            <tr>
+                <th class="left aligned">
+                    名称
+                </th>
+                <th class="left aligned">
+                    介绍
+                </th>
+                <th class="left aligned">
+                    @Html.DisplayNameFor(model => model.Company)
+                </th>
+                <th class="left aligned">
+                    联系人
+                </th>
+                <th class="left aligned">
+                    联系地址
+                </th>
+                <th class="left aligned">
+                    @Html.DisplayNameFor(model => model.Contact_Phone)
+                </th>
+                <th class="left aligned">
+                    联系电话
+                </th>
+                <th class="left aligned">
+                    传真
+                </th>
+                <th class="left aligned">
+                    @Html.DisplayNameFor(model => model.Url)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td class="left aligned">
+                        @Html.DisplayFor(modelItem => item.Introduce)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Company)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Contact_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Contact_Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Contact_Phone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Contact_Tele)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Contact_Fax)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Url)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Name }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Name }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Name })
+                    </td>
+                </tr>
+            }
+
+    </table>
+</div>

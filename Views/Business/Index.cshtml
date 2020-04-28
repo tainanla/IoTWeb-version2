@@ -1,0 +1,372 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/JS/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet" />
+<script src="~/JS/bootstrap-select-1.13.0-dev/dist/js/bootstrap-select.min.js"></script>
+<script src="~/JS/bootstrap-select-1.13.0-dev/dist/js/i18n/defaults-zh_CN.min.js"></script>
+<link href="~/JS/bootstrap-select-1.13.0-dev/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+
+<script src="~/JS/bootstrap-table-master/dist/bootstrap-table.min.js"></script>
+<script src="~/JS/bootstrap-table-master/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+<link href="~/JS/bootstrap-table-master/dist/bootstrap-table.min.css" rel="stylesheet" />
+
+<div id="toolbar" style="margin:10px;">
+    <a href="/UserInfoes/Index" style="margin-right:20px">返回</a>
+    <input type="button" class="btn btn-primary" id="btnAddAccount" value="添加产品" data-toggle="modal" data-target="#myAddProduct" />
+</div>
+<div style="margin:0 10px;">
+    <table id="bTable"></table>
+</div>
+<script>
+    $(function () {
+        //数据模型下拉框
+        $.get("./Business/GetDataTypes", function (data, status, xhr) {
+            var temp = "";
+            for (var i = 0; i < data.length; i++) {
+                temp += "<option value=\"" + data[i].ID + "\">" + data[i].Name + "</option>";
+            }
+
+            $("#DataType").selectpicker({
+                width: '100%',
+                title: "请选择",
+            }).html(temp).selectpicker('refresh');
+        });
+
+
+        //初始化加载数据
+        $("#bTable").bootstrapTable({
+            url: './Business/GetProducts',         //请求后台的URL（*）
+            method: 'get',                      //请求方式（*）
+            toolbar: '#toolbar',                //工具按钮用哪个容器
+            striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: false,                   //是否显示分页（*）
+            sortable: true,                     //是否启用排序
+            sortOrder: "asc",                   //排序方式
+            //queryParams: oTableInit.queryParams,//传递参数（*）
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 10,                       //每页的记录行数（*）
+            pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+            search: false,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            contentType: "application/x-www-form-urlencoded",
+            strictSearch: true,
+            buttonsAlign: 'right',
+            toolbarAlign: 'left',
+            showColumns: false,                  //是否显示所有的列
+            showRefresh: false,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+            //height: 700,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "no",                     //每一行的唯一标识，一般为主键列
+            showToggle: false,                    //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: true,                   //是否显示父子表
+            columns: [
+                {
+                    field: 'Name',
+                    title: '产品名称',
+                    //align: 'center',
+                }, {
+                    field: 'APIkey',
+                    title: 'APIkey',
+                    //sortable: 'true'
+                }, {
+                    field: 'DeviceCount',
+                    title: '设备数量'
+                },
+                {
+                    field: 'operate',
+                    title: '操作',
+                    events: "operateEvents",
+                    formatter: operateFormatter //自定义方法，添加操作按钮
+                },
+            ],
+            rowStyle: function (row, index) {
+                var classesArr = ['success', 'info'];
+                var strclass = "";
+                if (index % 2 === 0) {//偶数行
+                    strclass = classesArr[0];
+                } else {//奇数行
+                    strclass = classesArr[1];
+                }
+                return { classes: strclass };
+            },//隔行变色
+            onExpandRow: function (index, row, $detail) {
+                DeviceInfo(index, row, $detail);
+            },
+        });
+
+
+        //添加OneNet产品
+        $('#SaveAccount').click(function () {
+            if ($("#ProductName").val().trim() == "") {
+                $("#lblRes").text("名称不能为空!");
+                setTimeout(function () {
+                    $("#lblRes").text("");
+                }, 2000);
+                return;
+            }
+            if ($("#MasterAPIkey").val().trim() == "") {
+                $("#lblRes").text("APIkey不能为空!");
+                setTimeout(function () {
+                    $("#lblRes").text("");
+                }, 2000);
+                return;
+            }
+
+            $.post("./Business/AddAccount", { ProductName: $("#ProductName").val(), MasterAPIkey: $("#MasterAPIkey").val() },
+                function (data, status, xhr) {
+                    if (data.ErrorMsg != "") {
+                        $("#lblRes").text("错误: " + data.ErrorMsg);
+                        setTimeout(function () {
+                            $("#lblRes").text("");
+                        }, 2000);
+                        return;
+                    }
+                    $("#ProductName").val('');
+                    $("#MasterAPIkey").val('');
+                    $("#myAddProduct").modal("hide");
+                    $("#bTable").bootstrapTable('refresh');
+                    $('.modal-backdrop').remove();
+                    $('#myAddProduct').removeClass('show');
+                })
+        });
+
+
+        //添加设备
+        $('#SaveDevice').click(function () {
+
+            if ($("#DeviceName").val().trim() == "") {
+                $("#lblRes2").text("设备名称不能为空!");
+                setTimeout(function () {
+                    $("#lblRes2").text("");
+                }, 2000);
+                return;
+            }
+            if ($("#IMEI").val().trim() == "") {
+                $("#lblRes2").text("IMEI不能为空!");
+                setTimeout(function () {
+                    $("#lblRes2").text("");
+                }, 2000);
+                return;
+            }
+            if ($('#DataType').val() == "") {
+                $("#lblRes2").text("请选择数据模型!");
+                setTimeout(function () {
+                    $("#lblRes2").text("");
+                }, 2000);
+                return;
+            }
+
+            $.post("./Business/AddDevice", { APIkey: currProduct["APIkey"], DeviceName: $("#DeviceName").val(), IMEI: $("#IMEI").val(), DataTypeID: $('#DataType').val() },
+                function (data, status, xhr) {
+                    if (data.ErrorMsg != "") {
+                        $("#lblRes2").text("错误: " + data.ErrorMsg);
+                        setTimeout(function () {
+                            $("#lblRes2").text("");
+                        }, 2000);
+                        return;
+                    }
+                    $("#DeviceName").val('');
+                    $("#IMEI").val('');
+                    $('#DataType').selectpicker('val', -1);
+                    $("#myAddDevice").modal("hide");
+                    $("#devTable-" + currProduct["ID"]).bootstrapTable('refresh');
+                    $('.modal-backdrop').remove();
+                    $('#myAddDevice').removeClass('show');
+                })
+        });
+
+    });
+    var currProduct;
+    function operateFormatter(value, row, index) {
+        return [
+            '<button type="button" class="RoleOfA btn btn-danger  btn-sm" style="margin-right:15px;">删除产品</button>',
+            '<button type="button" class="RoleOfB btn btn-success  btn-sm"  data-toggle="modal" data-target="#myAddDevice" style="margin-right:15px;">添加设备</button>',
+        ];
+
+    }
+
+    function operateFormatter2(value, row, index) {
+        return [
+            '<button type="button" class="RoleOf1 btn btn-danger  btn-sm" style="margin-right:15px;">删除设备</button>',
+        ];
+
+    }
+
+    window.operateEvents = {
+        'click .RoleOfA': function (e, value, row, index) {
+            if (confirm("确定删除?")) {
+                $.post("./Business/DelAccount", { rowID: row["ID"] },
+                    function (data, status, xhr) {
+                        $("#bTable").bootstrapTable('refresh');
+                    });
+            }
+        },
+        'click .RoleOfB': function (e, value, row, index) {
+            currProduct = row;
+        },
+        'click .RoleOf1': function (e, value, row, index) {
+            if (confirm("确定删除?")) {
+                $.post("./Business/DelDevice", { apikey: row.apikey, DeviceID: row.DeviceID },
+                    function (data, status, xhr) {
+                        $("#devTable-" + currProduct["ID"]).bootstrapTable('refresh');
+                    });
+            }
+        },
+    };
+
+    //初始化子表格
+    DeviceInfo = function (index, row, $detail) {
+        var parentid = row.ID;
+        var cur_table = $detail.html('<table id="devTable-' + row["ID"] + '"></table>').find('table');
+        $(cur_table).bootstrapTable({
+            url: './Business/GetDevices',
+            method: 'get',
+            queryParams: { APIkey: row.APIkey },
+            ajaxOptions: { strParentID: parentid },
+            clickToSelect: true,
+            detailView: false,//父子表
+            uniqueId: "MENU_ID",
+            pageSize: 10,
+            pageList: [10, 25],
+            columns: [
+                {
+                    field: "apikey",
+                    visible: false
+                },
+                {
+                    field: "DeviceID",
+                    visible: false
+                },
+                {
+                    field: 'Name',
+                    title: '设备名称'
+                },
+                {
+                    field: 'IMEI',
+                    title: 'IMEI'
+                },
+                {
+                    field: 'Online',
+                    title: '在线状态'
+                },
+                {
+                    field: 'LastTime',
+                    title: '最近上报时间'
+                },
+                {
+                    field: 'LastData',
+                    title: '最新上报数据',
+                    formatter: function (value, row, index) {
+                        if (value.length > 50)
+                            return "<a href='#' data-toggle='modal' data-target=\"#myDataDetail\" onclick=ShowDetail('" + encodeURI(value) + "')>" + value.substr(0, 50) + "...</a>";
+                        else
+                            return value;
+
+                    }
+                },
+                {
+                    field: 'operate',
+                    title: '操作',
+                    events: "operateEvents",
+                    formatter: operateFormatter2
+                },
+            ]
+        });
+    };
+
+    function ShowDetail(row) {
+        $("#detailArea").val(decodeURI(row));
+    }
+</script>
+
+<div class="modal fade" id="myAddProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="top: 20%">
+    <div class="modal-dialog" style="width: 500px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel"><b>添加OneNet产品</b></h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group" style="margin: 0 10px">
+                    <span class="input-group-addon">产品名称</span>
+                    <input type="text" id="ProductName" class="form-control" placeholder="请输入OneNet产品名称..." />
+                </div>
+                <div class="input-group" style="margin: 10px">
+                    <span class="input-group-addon">&nbsp;&nbsp;&nbsp;APIkey</span>
+                    <input type="text" id="MasterAPIkey" class="form-control" placeholder="请输入APIkey..." />
+                </div>
+            </div>
+            <div class="modal-footer" style="margin-right: 10px">
+                <label id="lblRes" style="color:orangered; float: left; margin-top: 8px;"></label>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
+                <button type="button" class="btn btn-primary" id="SaveAccount">保 存</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+
+<div class="modal fade" id="myAddDevice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true" style="top: 20%">
+    <div class="modal-dialog" style="width: 500px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel3"><b>添加设备</b></h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group" style="margin: 0 10px">
+                    <span class="input-group-addon">设备名称</span>
+                    <input type="text" id="DeviceName" class="form-control" placeholder="请输入设备名称..." />
+                </div>
+                <div class="input-group" style="margin: 10px">
+                    <span class="input-group-addon">设备IMEI</span>
+                    <input type="text" id="IMEI" class="form-control" placeholder="请输入IMEI..." />
+                </div>
+                <div class="input-group" style="margin: 10px">
+                    <span class="input-group-addon">数据模型</span>
+                    <select id="DataType" class="selectpicker" data-style="btn-info"></select>
+                </div>
+            </div>
+            <div class="modal-footer" style="margin-right: 10px">
+                <label id="lblRes2" style="color:orangered; float: left; margin-top: 8px;"></label>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
+                <button type="button" class="btn btn-primary" id="SaveDevice">保 存</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+
+<div class="modal fade" id="myDataDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true" style="top: 20%">
+    <div class="modal-dialog" style="width: 500px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel4"><b>数据详情</b></h4>
+            </div>
+            <div class="modal-body">
+                <textarea id="detailArea" style="width:466px;height:200px;resize:none"></textarea>
+            </div>
+            <div class="modal-footer" style="margin-right: 10px">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>

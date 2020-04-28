@@ -1,0 +1,76 @@
+﻿@model IEnumerable<OneNETDataReceiver.Model.Device>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage3.cshtml";
+}
+<p>
+    <div class="ui stackable equal width grid">
+        <div class="column">
+            <button class="ui secondary button">
+                @Html.ActionLink("Create New", "Create")
+            </button>
+        </div>
+    </div>
+</p>
+<table class="ui celled selectable right aligned table" style="width: 100%;">
+    <tr>
+        <th style="text-align:center;">
+            @Html.DisplayNameFor(model => model.SN)
+        </th>
+        <th style="text-align:center;">
+            @Html.DisplayNameFor(model => model.Value)
+        </th>
+        <th style="text-align:center;">
+            @Html.DisplayNameFor(model => model.Device_name)
+        </th>
+        <th style="text-align:center;">
+            @Html.DisplayNameFor(model => model.CreateTime)
+        </th>
+        <th style="text-align:center;">
+            @Html.DisplayNameFor(model => model.Company_id)
+        </th>
+        <th style="text-align:center;">
+            @Html.DisplayNameFor(model => model.Role)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td style="text-align:center;">
+                @Html.DisplayFor(modelItem => item.SN)
+            </td>
+            <td style="text-align:center;">
+                @Html.DisplayFor(modelItem => item.Value)
+            </td>
+            <td style="text-align:center;">
+                @Html.DisplayFor(modelItem => item.Device_name)
+            </td>
+            <td style="text-align:center;">
+                @Html.DisplayFor(modelItem => item.CreateTime)
+            </td>
+            <td style="text-align:center;">
+                @Html.DisplayFor(modelItem => item.Company_id)
+            </td>
+            <td style="text-align:center;">
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+            <td style="text-align:center;">
+                <div class="spaced">
+                    <button class="teal ui button">
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID })
+                    </button>|
+                    <button class="blue ui button">
+                        @Html.ActionLink("Details", "Details", new { id = item.ID })
+                    </button>|
+                    <button class="red ui button">
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                    </button>
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>

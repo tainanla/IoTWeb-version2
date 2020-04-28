@@ -1,0 +1,188 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <body>
+        <div>
+            <a href="/UserRole/CompanyAdmin" class="btn btn-primary btn-large" target="_self">返回</a>
+        </div>
+
+        <div style="color:#00E676;font-size:x-large;">
+            鹰潭手提城市牛皮藓清洗激光器:
+            <label id="device1">...</label>
+        </div>
+        <div style="color:#00E676;font-size:x-large;">
+            门磁-王老师家冰箱:
+            <label id="device2">...</label>
+        </div>
+        <div style="color:#00E676;font-size:x-large;">
+            门磁-王老师家门:
+            <label id="device3">...</label>
+        </div>
+        <div style="color:#00E676;font-size:x-large;">
+            门磁-3斋821A门:
+            <label id="device4">...</label>
+        </div>
+        <div style="color:#00E676;font-size:x-large;">
+            门磁-机电楼418门:
+            <label id="device5">...</label>
+        </div>
+        <div style="color:#00E676;font-size:x-large;">
+            2336挂锁:
+            <button value="开锁" onclick="OpenLock('866971030672336')">开锁</button>
+            <label id="device6">...</label>
+        </div>
+        <div style="color:#00E676;font-size:x-large;">
+            4529电表:
+            <label id="device7">...</label>
+        </div>
+        <div style="color:#00E676;font-size:x-large;">
+            0379挂锁:
+            <button value="开锁" onclick="OpenLock('866971034080379')">开锁</button>
+            <label id="device8">...</label>
+        </div>
+        <br />
+        <br />
+        <label id="lbl_GPS" style="color:#00E676;font-size:x-large;"></label>
+    </body>
+<script>
+    
+
+    Date.prototype.Format = function (fmt) {
+        var o = {
+            "M+": this.getMonth() + 1,
+            "d+": this.getDate(),
+            "H+": this.getHours(),
+            "m+": this.getMinutes(),
+            "s+": this.getSeconds(),
+            "q+": Math.floor((this.getMonth() + 3) / 3),
+            "S": this.getMilliseconds()
+        };
+        if (/(y+)/.test(fmt))
+            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt))
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }  
+
+    $(function () {
+        setInterval("GetVal()", 1000);
+    });
+
+    function OpenLock(imei) {
+        $.ajax({
+            url: "./Another/OpenLock",
+            data: { IMEI: imei },
+            success: function (result) {
+                console.log(result);
+            }
+        });
+    }
+
+    function GetVal() {
+        $.ajax({
+            url: "./Another/GetVal_All",
+            success: function (result) {
+                console.log(result);
+                var time = new Date().Format("yyyy-MM-dd HH:mm:ss");
+                $("#lbl_GPS").text("数据刷新时间:" +time);
+                if (result.split(',')[0] == "1") {
+                    $("#device1").text("打开");
+                    $("#device1").css({ "color": "#00E676" });
+                }
+                else if (result.split(',')[0] == "0") {
+                    $("#device1").text("关闭");
+                    $("#device1").css({ "color": "#FF3D00" });
+                }
+                else {
+                    $("#device1").text("关闭");
+                    $("#device1").css({ "color": "#FF3D00" });
+                }
+
+                if (result.split(',')[1] == "1") {
+                    $("#device2").text("打开");
+                    $("#device2").css({ "color": "#00E676" });
+                }
+                else if (result.split(',')[1] == "0") {
+                    $("#device2").text("关闭");
+                    $("#device2").css({ "color": "#FF3D00" });
+                }
+                else {
+                    $("#device2").text("关闭");
+                    $("#device2").css({ "color": "#FF3D00" });
+                }
+
+                if (result.split(',')[2] == "1") {
+                    $("#device3").text("打开");
+                    $("#device3").css({ "color": "#00E676" });
+                }
+                else if (result.split(',')[2] == "0") {
+                    $("#device3").text("关闭");
+                    $("#device3").css({ "color": "#FF3D00" });
+                }
+                else {
+                    $("#device3").text("关闭");
+                    $("#device3").css({ "color": "#FF3D00" });
+                }
+                if (result.split(',')[3] == "1") {
+                    $("#device4").text("打开");
+                    $("#device4").css({ "color": "#00E676" });
+                }
+                else if (result.split(',')[3] == "0") {
+                    $("#device4").text("关闭");
+                    $("#device4").css({ "color": "#FF3D00" });
+                }
+                else {
+                    $("#device4").text("关闭");
+                    $("#device4").css({ "color": "#FF3D00" });
+                }
+                if (result.split(',')[4] == "1") {
+                    $("#device5").text("打开");
+                    $("#device5").css({ "color": "#00E676" });
+                }
+                else if (result.split(',')[4] == "0") {
+                    $("#device5").text("关闭");
+                    $("#device5").css({ "color": "#FF3D00" });
+                }
+                else {
+                    $("#device5").text("关闭");
+                    $("#device5").css({ "color": "#FF3D00" });
+                }
+
+                if (result.split(',')[5] == "2") {
+                    $("#device6").text("锁已关闭");
+                    $("#device6").css({ "color": "#1010FF" });
+                }
+                else {
+                    $("#device6").text(result.split(',')[5]);
+                    $("#device6").css({ "color": "#1010FF" });
+                }
+
+
+                if (result.split(',')[6] == "2") {
+                    $("#device7").text("电压:2.986V");
+                    $("#device7").css({ "color": "#1010FF" });
+                }
+                
+                else {
+                    $("#device7").text(result.split(',')[6]);
+                    $("#device7").css({ "color": "#1010FF" });
+                }
+
+                if (result.split(',')[7] == "2") {
+                    $("#device8").text("锁已关闭");
+                    $("#device8").css({ "color": "#1010FF" });
+                }
+                else {
+                    $("#device8").text(result.split(',')[7]);
+                    $("#device8").css({ "color": "#1010FF" });
+                }
+            }
+        });
+    }
+</script>
+
+
+

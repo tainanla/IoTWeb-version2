@@ -1,0 +1,527 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="IoTWebModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--生成过程中发现错误:
+警告 6013: 表/视图“IoTWeb.dbo.DataType”未定义主键，并且无法推断有效的主键。已排除了此表/视图。若要使用实体，将需要检查您的架构、添加正确的键并取消对实体的注释。
+        <EntityType Name="DataType">
+          <Property Name="ID" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>-->
+        <!--生成过程中发现错误:
+警告 6013: 表/视图“IoTWeb.dbo.DeviceInfo”未定义主键，并且无法推断有效的主键。已排除了此表/视图。若要使用实体，将需要检查您的架构、添加正确的键并取消对实体的注释。
+        <EntityType Name="DeviceInfo">
+          <Property Name="DeviceID" Type="nvarchar" MaxLength="50" />
+          <Property Name="DeviceName" Type="nvarchar" MaxLength="50" />
+          <Property Name="IMEI" Type="nvarchar" MaxLength="50" />
+          <Property Name="APIkey" Type="nvarchar" MaxLength="50" />
+          <Property Name="DataTypeID" Type="int" />
+          <Property Name="LastUpdateTime" Type="datetime" />
+          <Property Name="Battery" Type="int" />
+        </EntityType>-->
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“IoTWeb.dbo.DeviceValue”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="DeviceValue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SN" Type="nvarchar" MaxLength="50" />
+          <Property Name="Value" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreateTime" Type="datetime" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“IoTWeb.dbo.HistoryValue”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="HistoryValue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SN" Type="nvarchar" MaxLength="50" />
+          <Property Name="Value" Type="nvarchar" MaxLength="50" />
+          <Property Name="ReportTime" Type="datetime" />
+          <Property Name="RSRP" Type="int" />
+          <Property Name="SNR" Type="int" />
+          <Property Name="Battery" Type="int" />
+          <Property Name="ServerTime" Type="datetime" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“IoTWeb.dbo.HistoryValueServerSide”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="HistoryValueServerSide">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SN" Type="nvarchar" MaxLength="50" />
+          <Property Name="Value" Type="nvarchar" MaxLength="50" />
+          <Property Name="ReportTime" Type="datetime" />
+          <Property Name="RSRP" Type="int" />
+          <Property Name="SNR" Type="int" />
+          <Property Name="Battery" Type="int" />
+          <Property Name="ServerTime" Type="datetime" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“IoTWeb.dbo.OneNetProduct”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="OneNetProduct">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="APIkey" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“IoTWeb.dbo.Renjianxin_ButtonClick”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="Renjianxin_ButtonClick">
+          <Key>
+            <PropertyRef Name="ButtonID" />
+          </Key>
+          <Property Name="ButtonID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ButtonName" Type="nchar" MaxLength="10" />
+          <Property Name="ClickCount" Type="int" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“IoTWeb.dbo.Renjianxin_HealthData”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="Renjianxin_HealthData">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="UserTemp" Type="float" />
+          <Property Name="UserHeartbeat" Type="int" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“IoTWeb.dbo.SMSDeviceInfo”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="SMSDeviceInfo">
+          <Key>
+            <PropertyRef Name="IMEI" />
+            <PropertyRef Name="ObservedDevice" />
+            <PropertyRef Name="Area" />
+          </Key>
+          <Property Name="IMEI" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="DataType" Type="int" />
+          <Property Name="ObservedDevice" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Area" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsAllDay" Type="bit" />
+          <Property Name="StartTime" Type="time" Precision="7" />
+          <Property Name="EndTime" Type="time" Precision="7" />
+          <Property Name="IsEndTimeNextDay" Type="bit" />
+          <Property Name="Person1" Type="nchar" MaxLength="50" />
+          <Property Name="Phone1" Type="nchar" MaxLength="50" />
+          <Property Name="Person2" Type="nchar" MaxLength="50" />
+          <Property Name="Phone2" Type="nchar" MaxLength="50" />
+          <Property Name="Person3" Type="nchar" MaxLength="50" />
+          <Property Name="Phone3" Type="nchar" MaxLength="50" />
+          <Property Name="LastStatus" Type="bit" />
+          <Property Name="LastUpdateTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“IoTWeb.dbo.SysLog”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="SysLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Msg" Type="nvarchar(max)" />
+          <Property Name="Msg2" Type="nvarchar(max)" />
+          <Property Name="Msg3" Type="nvarchar(max)" />
+          <Property Name="CreateTime" Type="datetime" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“IoTWeb.dbo.UserInfo”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="UserInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="RegisterTime" Type="datetime" />
+          <Property Name="Permission" Type="int" />
+        </EntityType>
+        <EntityContainer Name="IoTWebModelStoreContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeviceValue" EntityType="Self.DeviceValue" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [DeviceValue].[ID] AS [ID], 
+    [DeviceValue].[SN] AS [SN], 
+    [DeviceValue].[Value] AS [Value], 
+    [DeviceValue].[CreateTime] AS [CreateTime]
+    FROM [dbo].[DeviceValue] AS [DeviceValue]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="HistoryValue" EntityType="Self.HistoryValue" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [HistoryValue].[ID] AS [ID], 
+    [HistoryValue].[SN] AS [SN], 
+    [HistoryValue].[Value] AS [Value], 
+    [HistoryValue].[ReportTime] AS [ReportTime], 
+    [HistoryValue].[RSRP] AS [RSRP], 
+    [HistoryValue].[SNR] AS [SNR], 
+    [HistoryValue].[Battery] AS [Battery], 
+    [HistoryValue].[ServerTime] AS [ServerTime]
+    FROM [dbo].[HistoryValue] AS [HistoryValue]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="HistoryValueServerSide" EntityType="Self.HistoryValueServerSide" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [HistoryValueServerSide].[ID] AS [ID], 
+    [HistoryValueServerSide].[SN] AS [SN], 
+    [HistoryValueServerSide].[Value] AS [Value], 
+    [HistoryValueServerSide].[ReportTime] AS [ReportTime], 
+    [HistoryValueServerSide].[RSRP] AS [RSRP], 
+    [HistoryValueServerSide].[SNR] AS [SNR], 
+    [HistoryValueServerSide].[Battery] AS [Battery], 
+    [HistoryValueServerSide].[ServerTime] AS [ServerTime]
+    FROM [dbo].[HistoryValueServerSide] AS [HistoryValueServerSide]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="OneNetProduct" EntityType="Self.OneNetProduct" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [OneNetProduct].[ID] AS [ID], 
+    [OneNetProduct].[Name] AS [Name], 
+    [OneNetProduct].[APIkey] AS [APIkey]
+    FROM [dbo].[OneNetProduct] AS [OneNetProduct]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Renjianxin_ButtonClick" EntityType="Self.Renjianxin_ButtonClick" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Renjianxin_ButtonClick].[ButtonID] AS [ButtonID], 
+    [Renjianxin_ButtonClick].[ButtonName] AS [ButtonName], 
+    [Renjianxin_ButtonClick].[ClickCount] AS [ClickCount]
+    FROM [dbo].[Renjianxin_ButtonClick] AS [Renjianxin_ButtonClick]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Renjianxin_HealthData" EntityType="Self.Renjianxin_HealthData" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Renjianxin_HealthData].[UserID] AS [UserID], 
+    [Renjianxin_HealthData].[UserTemp] AS [UserTemp], 
+    [Renjianxin_HealthData].[UserHeartbeat] AS [UserHeartbeat]
+    FROM [dbo].[Renjianxin_HealthData] AS [Renjianxin_HealthData]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="SMSDeviceInfo" EntityType="Self.SMSDeviceInfo" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SMSDeviceInfo].[IMEI] AS [IMEI], 
+    [SMSDeviceInfo].[DataType] AS [DataType], 
+    [SMSDeviceInfo].[ObservedDevice] AS [ObservedDevice], 
+    [SMSDeviceInfo].[Area] AS [Area], 
+    [SMSDeviceInfo].[IsAllDay] AS [IsAllDay], 
+    [SMSDeviceInfo].[StartTime] AS [StartTime], 
+    [SMSDeviceInfo].[EndTime] AS [EndTime], 
+    [SMSDeviceInfo].[IsEndTimeNextDay] AS [IsEndTimeNextDay], 
+    [SMSDeviceInfo].[Person1] AS [Person1], 
+    [SMSDeviceInfo].[Phone1] AS [Phone1], 
+    [SMSDeviceInfo].[Person2] AS [Person2], 
+    [SMSDeviceInfo].[Phone2] AS [Phone2], 
+    [SMSDeviceInfo].[Person3] AS [Person3], 
+    [SMSDeviceInfo].[Phone3] AS [Phone3], 
+    [SMSDeviceInfo].[LastStatus] AS [LastStatus], 
+    [SMSDeviceInfo].[LastUpdateTime] AS [LastUpdateTime]
+    FROM [dbo].[SMSDeviceInfo] AS [SMSDeviceInfo]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="SysLog" EntityType="Self.SysLog" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SysLog].[ID] AS [ID], 
+    [SysLog].[Msg] AS [Msg], 
+    [SysLog].[Msg2] AS [Msg2], 
+    [SysLog].[Msg3] AS [Msg3], 
+    [SysLog].[CreateTime] AS [CreateTime]
+    FROM [dbo].[SysLog] AS [SysLog]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="UserInfo" EntityType="Self.UserInfo" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [UserInfo].[ID] AS [ID], 
+    [UserInfo].[Username] AS [Username], 
+    [UserInfo].[Password] AS [Password], 
+    [UserInfo].[RegisterTime] AS [RegisterTime], 
+    [UserInfo].[Permission] AS [Permission]
+    FROM [dbo].[UserInfo] AS [UserInfo]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="IoTWebModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="DeviceValue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="HistoryValue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReportTime" Type="DateTime" Precision="3" />
+          <Property Name="RSRP" Type="Int32" />
+          <Property Name="SNR" Type="Int32" />
+          <Property Name="Battery" Type="Int32" />
+          <Property Name="ServerTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="HistoryValueServerSide">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReportTime" Type="DateTime" Precision="3" />
+          <Property Name="RSRP" Type="Int32" />
+          <Property Name="SNR" Type="Int32" />
+          <Property Name="Battery" Type="Int32" />
+          <Property Name="ServerTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="OneNetProduct">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="APIkey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Renjianxin_ButtonClick">
+          <Key>
+            <PropertyRef Name="ButtonID" />
+          </Key>
+          <Property Name="ButtonID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ButtonName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="ClickCount" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Renjianxin_HealthData">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="UserTemp" Type="Double" />
+          <Property Name="UserHeartbeat" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SMSDeviceInfo">
+          <Key>
+            <PropertyRef Name="IMEI" />
+            <PropertyRef Name="ObservedDevice" />
+            <PropertyRef Name="Area" />
+          </Key>
+          <Property Name="IMEI" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="DataType" Type="Int32" />
+          <Property Name="ObservedDevice" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Area" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="IsAllDay" Type="Boolean" />
+          <Property Name="StartTime" Type="Time" Precision="7" />
+          <Property Name="EndTime" Type="Time" Precision="7" />
+          <Property Name="IsEndTimeNextDay" Type="Boolean" />
+          <Property Name="Person1" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Phone1" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Person2" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Phone2" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Person3" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Phone3" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="LastStatus" Type="Boolean" />
+          <Property Name="LastUpdateTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="SysLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Msg" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Msg2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Msg3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="UserInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegisterTime" Type="DateTime" Precision="3" />
+          <Property Name="Permission" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="IoTWebEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="DeviceValue" EntityType="Self.DeviceValue" />
+          <EntitySet Name="HistoryValue" EntityType="Self.HistoryValue" />
+          <EntitySet Name="HistoryValueServerSide" EntityType="Self.HistoryValueServerSide" />
+          <EntitySet Name="OneNetProduct" EntityType="Self.OneNetProduct" />
+          <EntitySet Name="Renjianxin_ButtonClick" EntityType="Self.Renjianxin_ButtonClick" />
+          <EntitySet Name="Renjianxin_HealthData" EntityType="Self.Renjianxin_HealthData" />
+          <EntitySet Name="SMSDeviceInfo" EntityType="Self.SMSDeviceInfo" />
+          <EntitySet Name="SysLog" EntityType="Self.SysLog" />
+          <EntitySet Name="UserInfo" EntityType="Self.UserInfo" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="IoTWebModelStoreContainer" CdmEntityContainer="IoTWebEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="IoTWebModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeviceValue">
+            <EntityTypeMapping TypeName="IoTWebModel.DeviceValue">
+              <MappingFragment StoreEntitySet="DeviceValue">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="SN" ColumnName="SN" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HistoryValue">
+            <EntityTypeMapping TypeName="IoTWebModel.HistoryValue">
+              <MappingFragment StoreEntitySet="HistoryValue">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="SN" ColumnName="SN" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="ReportTime" ColumnName="ReportTime" />
+                <ScalarProperty Name="RSRP" ColumnName="RSRP" />
+                <ScalarProperty Name="SNR" ColumnName="SNR" />
+                <ScalarProperty Name="Battery" ColumnName="Battery" />
+                <ScalarProperty Name="ServerTime" ColumnName="ServerTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HistoryValueServerSide">
+            <EntityTypeMapping TypeName="IoTWebModel.HistoryValueServerSide">
+              <MappingFragment StoreEntitySet="HistoryValueServerSide">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="SN" ColumnName="SN" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="ReportTime" ColumnName="ReportTime" />
+                <ScalarProperty Name="RSRP" ColumnName="RSRP" />
+                <ScalarProperty Name="SNR" ColumnName="SNR" />
+                <ScalarProperty Name="Battery" ColumnName="Battery" />
+                <ScalarProperty Name="ServerTime" ColumnName="ServerTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OneNetProduct">
+            <EntityTypeMapping TypeName="IoTWebModel.OneNetProduct">
+              <MappingFragment StoreEntitySet="OneNetProduct">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="APIkey" ColumnName="APIkey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Renjianxin_ButtonClick">
+            <EntityTypeMapping TypeName="IoTWebModel.Renjianxin_ButtonClick">
+              <MappingFragment StoreEntitySet="Renjianxin_ButtonClick">
+                <ScalarProperty Name="ButtonID" ColumnName="ButtonID" />
+                <ScalarProperty Name="ButtonName" ColumnName="ButtonName" />
+                <ScalarProperty Name="ClickCount" ColumnName="ClickCount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Renjianxin_HealthData">
+            <EntityTypeMapping TypeName="IoTWebModel.Renjianxin_HealthData">
+              <MappingFragment StoreEntitySet="Renjianxin_HealthData">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserTemp" ColumnName="UserTemp" />
+                <ScalarProperty Name="UserHeartbeat" ColumnName="UserHeartbeat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SMSDeviceInfo">
+            <EntityTypeMapping TypeName="IoTWebModel.SMSDeviceInfo">
+              <MappingFragment StoreEntitySet="SMSDeviceInfo">
+                <ScalarProperty Name="IMEI" ColumnName="IMEI" />
+                <ScalarProperty Name="DataType" ColumnName="DataType" />
+                <ScalarProperty Name="ObservedDevice" ColumnName="ObservedDevice" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="IsAllDay" ColumnName="IsAllDay" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="IsEndTimeNextDay" ColumnName="IsEndTimeNextDay" />
+                <ScalarProperty Name="Person1" ColumnName="Person1" />
+                <ScalarProperty Name="Phone1" ColumnName="Phone1" />
+                <ScalarProperty Name="Person2" ColumnName="Person2" />
+                <ScalarProperty Name="Phone2" ColumnName="Phone2" />
+                <ScalarProperty Name="Person3" ColumnName="Person3" />
+                <ScalarProperty Name="Phone3" ColumnName="Phone3" />
+                <ScalarProperty Name="LastStatus" ColumnName="LastStatus" />
+                <ScalarProperty Name="LastUpdateTime" ColumnName="LastUpdateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysLog">
+            <EntityTypeMapping TypeName="IoTWebModel.SysLog">
+              <MappingFragment StoreEntitySet="SysLog">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Msg" ColumnName="Msg" />
+                <ScalarProperty Name="Msg2" ColumnName="Msg2" />
+                <ScalarProperty Name="Msg3" ColumnName="Msg3" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserInfo">
+            <EntityTypeMapping TypeName="IoTWebModel.UserInfo">
+              <MappingFragment StoreEntitySet="UserInfo">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="RegisterTime" ColumnName="RegisterTime" />
+                <ScalarProperty Name="Permission" ColumnName="Permission" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

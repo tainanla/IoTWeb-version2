@@ -1,0 +1,89 @@
+﻿@model OneNETDataReceiver.Model.Laser
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Laser</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Introduce)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Introduce)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Company)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Company)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Url)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Url)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Contact_Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contact_Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Contact_Phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contact_Phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Contact_Tele)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contact_Tele)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Contact_Fax)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contact_Fax)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Contact_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contact_Name)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
